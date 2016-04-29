@@ -17,11 +17,11 @@
 
     <servlet-mapping>
         <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.action</url-pattern>
     </servlet-mapping>
 
    <welcome-file-list>
-      <welcome-file>hello.html</welcome-file>
+      <welcome-file>hello2.html</welcome-file>
     </welcome-file-list>
     
 </web-app>

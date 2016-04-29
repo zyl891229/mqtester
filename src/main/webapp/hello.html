@@ -26,9 +26,22 @@
       <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+    
   </head>
-
+<!--
+http://localhost:8080/mqtester/ActiveMqTestController/json.action 
+ -->
   <body>
+  
+<script>
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+  $http.get("http://localhost:8080/mqtester/ActiveMqTestController/json.action")
+  .success(function (response) {$scope.names = response.records;});
+});
+</script>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
@@ -106,7 +119,41 @@
           </div>
 
           <h2 class="sub-header">Section title</h2>
-          <div class="table-responsive">
+          <div ng-app="myApp" ng-controller="customersCtrl"> 
+	<ul>
+	  <li ng-repeat="x in names">
+	    {{ x.Name + ', ' + x.Country }}
+	  </li>
+	</ul>
+</div>
+
+<form class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-2 control-label">名:</label>
+    <div class="col-sm-10">
+    <input type="text" ng-model="fName" ng-disabled="!edit" placeholder="名">
+    </div>
+  </div> 
+  <div class="form-group">
+    <label class="col-sm-2 control-label">姓:</label>
+    <div class="col-sm-10">
+    <input type="text" ng-model="lName" ng-disabled="!edit" placeholder="姓">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">密码:</label>
+    <div class="col-sm-10">
+    <input type="password" ng-model="passw1" placeholder="密码">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">重复密码:</label>
+    <div class="col-sm-10">
+    <input type="password" ng-model="passw2" placeholder="重复密码">
+    </div>
+  </div>
+</form>
+   <!--        <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -232,7 +279,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
