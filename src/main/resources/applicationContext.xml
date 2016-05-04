@@ -27,17 +27,25 @@
     <context:component-scan base-package="com.testteam.mqtester"></context:component-scan>  
 -->
   
-      <!-- 配置connectionFactory   
-    <bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory"  destroy-method="stop">  
-        <property name="connectionFactory">  
-            <bean class="org.apache.activemq.ActiveMQConnectionFactory">  
-                <property name="brokerURL">  
-                    <value>tcp://127.0.0.1:61616</value>  
-                </property>  
-            </bean>  
-        </property>  
-        <property name="maxConnections" value="100"></property>  
-    </bean>  -->
+ <!-- 配置JMS连接工厂 -->
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://jasonzhang:61616" />
+    </bean>
+
+    <!-- 定义消息队列（Queue） -->
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <!-- 设置消息队列的名字 -->
+        <constructor-arg >
+            <value>testSpringQueue</value>
+        </constructor-arg>
+    </bean>
+
+    <!-- 配置JMS模板（Queue），Spring提供的JMS工具类，它发送、接收消息。 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="queueDestination" />
+        <property name="receiveTimeout" value="1000" />
+    </bean>
   
 	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 
 	<bean id="mappingJacksonHttpMessageConverter"

@@ -1,5 +1,11 @@
 package controller;
 
+import javax.annotation.Resource;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -7,11 +13,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 
 @Controller
 @RequestMapping("/ActiveMqTestController")
 public class ActiveMqTestController {
     private Logger logger = LoggerFactory.getLogger(ActiveMqTestController.class);
+    
+    @Resource
+    private JmsTemplate jmsTemplate;
+    
+    public void setJmsTemplate(JmsTemplate jmsTemplate) {
+    	System.out.println("setJmsTemplate");
+        this.jmsTemplate = jmsTemplate;
+    }
+    
     
     @RequestMapping(value = "/test", method = { RequestMethod.POST, RequestMethod.GET })
     @ResponseBody
@@ -19,7 +36,27 @@ public class ActiveMqTestController {
         String logHeader = Thread.currentThread().getStackTrace()[1].getMethodName() + "调用接口test";
         logger.info("{} -S", logHeader);
         logger.info(logHeader + "-S " + test);
-        return test;
+        if (test.equals("1")) {
+        	System.out.println("开始发送");
+        	sendMqMessage(null,"spring activemq queue type message !");
+			return test;
+		}
+        return "sorry not match";
+    }
+    
+    /**
+     * 说明:发送的时候如果这里没有显示的指定destination.将用spring xml中配置的destination
+     * @param destination
+     * @param message
+     */
+    public void sendMqMessage(Destination destination, final String message){
+        System.out.println("开始...");
+        jmsTemplate.send(jmsTemplate.getDefaultDestination(), new MessageCreator() {
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(message);
+            }
+        });
+        System.out.println("spring send message...");
     }
 
     @RequestMapping(value = "/json", method = { RequestMethod.POST, RequestMethod.GET })

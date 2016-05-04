@@ -21,7 +21,7 @@
     </servlet-mapping>
 
    <welcome-file-list>
-      <welcome-file>hello2.html</welcome-file>
+      <welcome-file>hello.html</welcome-file>
     </welcome-file-list>
     
 </web-app>
