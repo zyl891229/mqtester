@@ -127,8 +127,14 @@ app.controller('customersCtrl', function($scope, $http) {
 	</ul>
 </div>
 
-<form action="ActiveMqTestController/test.action" method="post">
+<!--  <form action="ActiveMqTestController/test.action" method="post">
   <p>key: <input type="key" name="key" /></p>
+  <input type="submit" value="Submit" />
+</form>-->
+
+<form action="http://10.106.131.54:8080/webapp/ActiveMqTestController/json.action" method="get">
+  <p>name: <input type="name" name="name" /></p>
+    <p>commit: <input type="commit" name="commit" /></p>
   <input type="submit" value="Submit" />
 </form>
    <!--        <div class="table-responsive">

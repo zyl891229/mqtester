@@ -3,10 +3,13 @@ package controller;
 import java.io.BufferedInputStream;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import java.net.URLDecoder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,19 +26,24 @@ public class ShellController {
     
     @RequestMapping(value = "/change_commit", method = { RequestMethod.POST, RequestMethod.GET })
     @ResponseBody
-    public Object changeCommit(@RequestParam(value = "name") String name,@RequestParam(value = "commit") String commit,HttpServletRequest request ) throws IOException, InterruptedException {
-	       logger.info("ShellController.changeCommit=>"+name+"   "+commit+"  "+request.getRequestURL().toString());
-	       String fullpath = "/User/yirendai/Work/webdata"+request.getRequestURL().toString().split("webapp")[1];
-	       String cmd1 = "shell "+name.trim()+" "+commit.trim()+" "+fullpath.trim();
-    	      String cmd = "pwd";
+    public void changeCommit(@RequestParam(value = "name") String name,@RequestParam(value = "commit") String commit,@RequestParam(value = "path") String path,HttpServletRequest request,HttpServletResponse response) throws IOException, InterruptedException {
+   			  String referer = request.getHeader("REFERER");
+	          String fullpath = "/Users/yirendai/Work/webdata"+ URLDecoder.decode(path,"UTF-8").split("webapp")[1];
+	          String cmd1 = "sed -i '' 's#<td id=.*>\\(.*td\\)#<td id=\""+name.trim()+"\">/\\1#g' /Users/yirendai/Work/webdata/test.sed";
+	          String cmd2 = "sed -i '' 's#\\\\1.*\\\\2#\\\\1"+commit.trim()+"\\\\2#g' /Users/yirendai/Work/webdata/test.sed";
+	          String cmd3 = "sed -i '' -f /Users/yirendai/Work/webdata/test.sed "+fullpath.trim();
+	          logger.info(cmd1);
+	          logger.info(cmd2);
+	          logger.info(cmd3);
     	      String result = "";
     	      BufferedReader br=null;
     	      BufferedInputStream in=null;
     	      try {
-	    	       Process p = Runtime.getRuntime().exec(cmd);
+    	    	  Runtime.getRuntime().exec(cmd1);
+    	    	  Runtime.getRuntime().exec(cmd2);
+	    	       Process p = Runtime.getRuntime().exec(cmd3);
 	    	       if(p.waitFor() != 0){  
 	    	        result+="没有进程号";
-	    	              return "没有进程号";  
 	    	       }    
 	    	       in = new BufferedInputStream(p.getInputStream());
 	    	       br = new BufferedReader(new InputStreamReader(in));
@@ -45,7 +53,6 @@ public class ShellController {
 	    	          }
     	      } catch (Exception e) {
 	    	       e.printStackTrace();
-	    	       return "异常";
     	      }finally{
 	    	       if(br!=null){
 	    	           try {
@@ -55,9 +62,9 @@ public class ShellController {
 		    	    	 	  e.printStackTrace();
 		    	     }
     	       }
-    	       logger.info("ShellController.changeCommit=>"+result);
+	    	   logger.info("ShellController.changeCommit=>\nname:"+name+"   \ncommit:"+commit+"   \npath"+path.split("webapp")[1]+"\nreferer"+referer);
+    	       logger.info("ShellController.changeCommit=>result:"+result);
+    	       response.sendRedirect(response.encodeRedirectURL(referer.split("\\?")[0]));  
     	      }
-//    	      return result;
-    	      return cmd1;
     }
 }
