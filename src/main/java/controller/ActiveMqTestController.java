@@ -67,12 +67,10 @@ public class ActiveMqTestController {
 
     @RequestMapping(value = "/json", method = { RequestMethod.POST, RequestMethod.GET })
     @ResponseBody
-    public void  json(@RequestParam(value = "name") String name,@RequestParam(value = "commit") String commit,@RequestParam(value = "path") String path,HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void  json() throws IOException {
     		String reString = "{ \"records\":[ {\"Name\":\"Alfreds Futterkiste\",\"City\":\"Berlin\",\"Country\":\"Germany\"}, {\"Name\":\"Ana Trujillo Emparedados y helados\",\"City\":\"México D.F.\",\"Country\":\"Mexico\"}, {\"Name\":\"Antonio Moreno Taquería\",\"City\":\"México D.F.\",\"Country\":\"Mexico\"}, {\"Name\":\"Around the Horn\",\"City\":\"London\",\"Country\":\"UK\"}, {\"Name\":\"B's Beverages\",\"City\":\"London\",\"Country\":\"UK\"}, {\"Name\":\"Berglunds snabbk?p\",\"City\":\"Lule?\",\"Country\":\"Sweden\"}, {\"Name\":\"Blauer See Delikatessen\",\"City\":\"Mannheim\",\"Country\":\"Germany\"}, {\"Name\":\"Blondel père et fils\",\"City\":\"Strasbourg\",\"Country\":\"France\"}, {\"Name\":\"Bólido Comidas preparadas\",\"City\":\"Madrid\",\"Country\":\"Spain\"}, {\"Name\":\"Bon app'\",\"City\":\"Marseille\",\"Country\":\"France\"}, {\"Name\":\"Bottom-Dollar Marketse\",\"City\":\"Tsawassen\",\"Country\":\"Canada\"}, {\"Name\":\"Cactus Comidas para llevar\",\"City\":\"Buenos Aires\",\"Country\":\"Argentina\"}, {\"Name\":\"Centro comercial Moctezuma\",\"City\":\"México D.F.\",\"Country\":\"Mexico\"}, {\"Name\":\"Chop-suey Chinese\",\"City\":\"Bern\",\"Country\":\"Switzerland\"}, {\"Name\":\"Comércio Mineiro\",\"City\":\"S?o Paulo\",\"Country\":\"Brazil\"} ] }";
     		String reString1 = "{ \"records\":[ {\"Name\":\"Alfreds Futterkiste\",\"City\":\"Berlin\",\"Country\":\"Germany\"}]}";
-    		String referer = request.getHeader("REFERER");
-    		System.out.println(name+commit+path+referer);
-    		response.sendRedirect(response.encodeRedirectURL("http://www.baidu.com"));  
-//    		 return request.getRequestURL().toString()+"      "+name+"      "+commit;
+
+    		
     }
 }

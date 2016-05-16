@@ -29,19 +29,13 @@ public class ShellController {
     public void changeCommit(@RequestParam(value = "name") String name,@RequestParam(value = "commit") String commit,@RequestParam(value = "path") String path,HttpServletRequest request,HttpServletResponse response) throws IOException, InterruptedException {
    			  String referer = request.getHeader("REFERER");
 	          String fullpath = "/Users/yirendai/Work/webdata"+ URLDecoder.decode(path,"UTF-8").split("webapp")[1];
-	          String cmd1 = "sed -i '' 's#<td id=.*>\\(.*td\\)#<td id=\""+name.trim()+"\">/\\1#g' /Users/yirendai/Work/webdata/test.sed";
-	          String cmd2 = "sed -i '' 's#\\\\1.*\\\\2#\\\\1"+commit.trim()+"\\\\2#g' /Users/yirendai/Work/webdata/test.sed";
-	          String cmd3 = "sed -i '' -f /Users/yirendai/Work/webdata/test.sed "+fullpath.trim();
-	          logger.info(cmd1);
-	          logger.info(cmd2);
-	          logger.info(cmd3);
+	          String cmd = "sh /Users/yirendai/Work/webdata/chang_commit.sh "+name.trim()+" "+commit.trim().replaceAll("[\\t\\r]", "<br>")+" "+fullpath.trim();  
+	          logger.info(cmd);
     	      String result = "";
     	      BufferedReader br=null;
     	      BufferedInputStream in=null;
     	      try {
-    	    	  Runtime.getRuntime().exec(cmd1);
-    	    	  Runtime.getRuntime().exec(cmd2);
-	    	       Process p = Runtime.getRuntime().exec(cmd3);
+	    	       Process p = Runtime.getRuntime().exec(cmd);
 	    	       if(p.waitFor() != 0){  
 	    	        result+="没有进程号";
 	    	       }    
@@ -62,9 +56,9 @@ public class ShellController {
 		    	    	 	  e.printStackTrace();
 		    	     }
     	       }
-	    	   logger.info("ShellController.changeCommit=>\nname:"+name+"   \ncommit:"+commit+"   \npath"+path.split("webapp")[1]+"\nreferer"+referer);
+	    	   logger.info("ShellController.changeCommit=>\nname:"+name.trim()+"   \ncommit:"+commit.trim().replaceAll("[\\t\\n\\r]", "<br>")+"   \npath"+path.split("webapp")[1]+"\nreferer"+referer);
     	       logger.info("ShellController.changeCommit=>result:"+result);
-    	       response.sendRedirect(response.encodeRedirectURL(referer.split("\\?")[0]));  
+    	       response.sendRedirect(response.encodeRedirectURL(referer.split("\\?")[0]));
     	      }
     }
 }
