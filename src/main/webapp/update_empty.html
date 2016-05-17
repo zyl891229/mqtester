@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://a4.mzstatic.com/us/r30/Purple60/v4/f3/6e/44/f36e44a7-1a65-9b21-ed95-10dc20ced9f4/icon175x175.jpeg">
+
+    <title >打包列表</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="http://v3.bootcss.com/examples/starter-template/starter-template.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="http://v3.bootcss.com/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]--> 
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">宜人贷理财</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+        <!--
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          -->
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="starter-template">
+        <h1 id="title">打包备份列表</h1>
+        <p class="lead">可以利用 crtl＋F 搜索；<br>也可以修改某一个包的备注，需要填写包名和要修改的备注。</p>
+      </div>
+
+    </div><!-- /.container -->
+        <div class="col-md-100">
+          <form action="http://10.106.131.54:8080/webapp/ShellController/change_commit.action" method="get">
+          <table class="table table-hover table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>包名</th>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+            <!--addstart-->
+            <!--addend-->
+              <tr>
+                <td>  
+              <div class="form-group">
+                  <label for="name">包名</label>
+                  <input type="name" class="form-control" name="name" placeholder="请输入" required/>
+              </div>
+              </td>
+                <td>
+                <div class="form-group">                  
+                  <label for="commit">备注</label>
+                  <textarea class="form-control" name="commit" rows="10" placeholder="请输入" required></textarea>
+                  <input type="hidden" value="" id="path" name="path" />
+                  <input type="hidden" value="" id="fullpath" name="fullpath" />
+                  <br>
+                  <input type="submit" value="提交" class="btn btn-danger"/>
+                </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          </form>
+      </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $("#path").val(window.location.pathname);
+        $("#fullpath").val(window.location.href);
+
+        var name = decodeURIComponent(window.location.pathname);
+        var protocol = decodeURIComponent(window.location.protocol);
+
+        if (protocol=="http:") {
+             document.getElementById('title').innerHTML=name.substring(11,name.length-12)+" 打包备份列表";
+
+        } else {
+                       document.getElementById('title').innerHTML=name.substring(0,name.length-12)+" 打包备份列表";  
+        }
+      })
+    </script>
+
+
+
+  </body>
+</html>
+
+

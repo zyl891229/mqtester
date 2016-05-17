@@ -26,10 +26,16 @@ public class ShellController {
     
     @RequestMapping(value = "/change_commit", method = { RequestMethod.POST, RequestMethod.GET })
     @ResponseBody
-    public void changeCommit(@RequestParam(value = "name") String name,@RequestParam(value = "commit") String commit,@RequestParam(value = "path") String path,HttpServletRequest request,HttpServletResponse response) throws IOException, InterruptedException {
+    public void changeCommit(@RequestParam(value = "name") String name,@RequestParam(value = "commit") String commit,@RequestParam(value = "path") String path,@RequestParam(value = "fullpath") String fullpath,HttpServletRequest request,HttpServletResponse response) throws IOException, InterruptedException {
    			  String referer = request.getHeader("REFERER");
-	          String fullpath = "/Users/yirendai/Work/webdata"+ URLDecoder.decode(path,"UTF-8").split("webapp")[1];
-	          String cmd = "sh /Users/yirendai/Work/webdata/chang_commit.sh "+name.trim()+" "+commit.trim().replaceAll("[\\t\\r]", "<br>")+" "+fullpath.trim();  
+   			  if (path.contains("webapp")) {
+   		          path = "/Users/yirendai/Work/webdata"+URLDecoder.decode(path,"UTF-8").split("webapp")[1];
+			}
+   			  else {
+   				  
+   				path = "/Users/yirendai/Work/webdata/ftp"+URLDecoder.decode(path,"UTF-8")                                                                                                                                              ;
+			}
+	          String cmd = "sh /Users/yirendai/Work/webdata/chang_commit.sh "+name.trim()+" "+commit.trim().replaceAll("[\\t\\n\\r]", "<br>").replaceAll("<br><br>", "<br>")+" "+path.trim();  
 	          logger.info(cmd);
     	      String result = "";
     	      BufferedReader br=null;
@@ -56,9 +62,9 @@ public class ShellController {
 		    	    	 	  e.printStackTrace();
 		    	     }
     	       }
-	    	   logger.info("ShellController.changeCommit=>\nname:"+name.trim()+"   \ncommit:"+commit.trim().replaceAll("[\\t\\n\\r]", "<br>")+"   \npath"+path.split("webapp")[1]+"\nreferer"+referer);
+	    	   logger.info("ShellController.changeCommit=>\nname:"+name.trim()+"   \ncommit:"+commit.trim().replaceAll("[\\t\\n\\r]", "<br>")+"   \npath:"+path+"   \nreferer:"+referer+"   \nfullpath:"+fullpath);
     	       logger.info("ShellController.changeCommit=>result:"+result);
-    	       response.sendRedirect(response.encodeRedirectURL(referer.split("\\?")[0]));
+    	       response.sendRedirect(fullpath);
     	      }
     }
 }
