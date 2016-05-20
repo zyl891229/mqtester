@@ -5,7 +5,7 @@ PACKAGE_NAME=$2
 COMMENT=$3
 FTP_FULL_PATH=/Users/yirendai/Work/webdata/ftp/${FTP_PATH}
 
-if [-d ${FTP_FULL_PATH}] 
+if [ -d ${FTP_FULL_PATH} ] 
 then
 	echo "path exist"
 else
@@ -13,7 +13,7 @@ else
 	mkdir -p ${FTP_FULL_PATH}
 fi
 
-if [-d ${FTP_FULL_PATH}/update.html] 
+if [ -f ${FTP_FULL_PATH}/update.html ] 
 then
 	echo "update exist"
 else

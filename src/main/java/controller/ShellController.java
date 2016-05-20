@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import java.net.URLDecoder;
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,49 +23,75 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/ShellController")
 public class ShellController {
-    private Logger logger = LoggerFactory.getLogger(ActiveMqTestController.class);
-    
-    @RequestMapping(value = "/change_commit", method = { RequestMethod.POST, RequestMethod.GET })
-    @ResponseBody
-    public void changeCommit(@RequestParam(value = "name") String name,@RequestParam(value = "commit") String commit,@RequestParam(value = "path") String path,@RequestParam(value = "fullpath") String fullpath,HttpServletRequest request,HttpServletResponse response) throws IOException, InterruptedException {
-   			  String referer = request.getHeader("REFERER");
-   			  if (path.contains("webapp")) {
-   		          path = "/Users/yirendai/Work/webdata"+URLDecoder.decode(path,"UTF-8").split("webapp")[1];
+	private Logger logger = LoggerFactory.getLogger(ActiveMqTestController.class);
+
+	@RequestMapping(value = "/change_commit", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	public void changeCommit(@RequestParam(value = "name") String name, @RequestParam(value = "commit") String commit,
+			@RequestParam(value = "path") String path, @RequestParam(value = "fullpath") String fullpath,
+			HttpServletRequest request, HttpServletResponse response) throws IOException, InterruptedException {
+		String referer = request.getHeader("REFERER");
+		if (path.contains("webapp")) {
+			path = "/Users/yirendai/Work/webdata" + URLDecoder.decode(path, "UTF-8").split("webapp")[1];
+		} else {
+
+			path = "/Users/yirendai/Work/webdata/ftp" + URLDecoder.decode(path, "UTF-8");
+		}
+		String result = "";
+		BufferedReader br = null;
+		BufferedReader brerr = null;
+		BufferedInputStream in = null;
+		BufferedInputStream inerr = null;
+		try {
+			// 第一种方法
+			// String cmd = "sh /Users/yirendai/Work/webdata/change_commit.sh
+			// "+name.trim()+" "+commit.trim().replaceAll("[\\t\\n\\r]",
+			// "<br>").replaceAll("<br><br>", "<br>").replace(" ",
+			// "_").replaceAll("#", "")+" "+path.trim();
+			// logger.info(cmd);
+			// Process p = Runtime.getRuntime().exec(cmd);
+			// p.waitFor();
+			// 第二种方法
+			Process p = null;
+			Runtime runTime = Runtime.getRuntime();
+			String[] commands = new String[] { "sh", "/Users/yirendai/Work/webdata/change_commit.sh", name.trim(),
+					commit.trim().replaceAll("[\\t\\n\\r]", "<br>").replaceAll("<br><br>", "<br>")
+							.replaceAll(" ", "\\\\\\\\\\\\&nbsp;").replaceAll("#", "\\\\\\\\\\\\&nbsp;"),
+					path.trim() };
+			for (String string : commands) {
+				logger.info("commands:" + string);
 			}
-   			  else {
-   				  
-   				path = "/Users/yirendai/Work/webdata/ftp"+URLDecoder.decode(path,"UTF-8")                                                                                                                                              ;
+			p = runTime.exec(commands);
+			p.waitFor();
+			in = new BufferedInputStream(p.getInputStream());
+			inerr = new BufferedInputStream(p.getErrorStream());
+			br = new BufferedReader(new InputStreamReader(in));
+			brerr = new BufferedReader(new InputStreamReader(inerr));
+			String lineStr;
+			while ((lineStr = br.readLine()) != null) {
+				result += lineStr;
 			}
-	          String cmd = "sh /Users/yirendai/Work/webdata/chang_commit.sh "+name.trim()+" "+commit.trim().replaceAll("[\\t\\n\\r]", "<br>").replaceAll("<br><br>", "<br>")+" "+path.trim();  
-	          logger.info(cmd);
-    	      String result = "";
-    	      BufferedReader br=null;
-    	      BufferedInputStream in=null;
-    	      try {
-	    	       Process p = Runtime.getRuntime().exec(cmd);
-	    	       if(p.waitFor() != 0){  
-	    	        result+="没有进程号";
-	    	       }    
-	    	       in = new BufferedInputStream(p.getInputStream());
-	    	       br = new BufferedReader(new InputStreamReader(in));
-	    	       String lineStr;
-	    	       while ((lineStr = br.readLine()) != null) {
-	    	             result += lineStr;
-	    	          }
-    	      } catch (Exception e) {
-	    	       e.printStackTrace();
-    	      }finally{
-	    	       if(br!=null){
-	    	           try {
-				    	      br.close();
-				    	      in.close();
-		    	     } catch (IOException e) {
-		    	    	 	  e.printStackTrace();
-		    	     }
-    	       }
-	    	   logger.info("ShellController.changeCommit=>\nname:"+name.trim()+"   \ncommit:"+commit.trim().replaceAll("[\\t\\n\\r]", "<br>")+"   \npath:"+path+"   \nreferer:"+referer+"   \nfullpath:"+fullpath);
-    	       logger.info("ShellController.changeCommit=>result:"+result);
-    	       response.sendRedirect(fullpath);
-    	      }
-    }
+			while ((lineStr = brerr.readLine()) != null) {
+				result += lineStr;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			try {
+				if (br != null) {
+					br.close();
+					in.close();
+				}
+				if (brerr != null) {
+					brerr.close();
+					inerr.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			logger.info("ShellController.changeCommit=>result:" + result);
+			response.sendRedirect(fullpath);
+		}
+	}
 }
