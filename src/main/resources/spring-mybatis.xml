@@ -19,64 +19,8 @@
     http://www.springframework.org/schema/util/spring-util.xsd">  
 
     <!-- 自动扫描controller包下的所有类，使其认为spring mvc的控制器 -->
-  	<context:component-scan base-package="controller"></context:component-scan>
   	  	<context:component-scan base-package="dao"></context:component-scan>
   	  	<context:component-scan base-package="pojo"></context:component-scan>
-  	  	<context:component-scan base-package="service"></context:component-scan>
-  	
-		  <!--  
-		  <context:exclude-filter type="annotation" 
-		  		expression="org.springframework.stereotype.Repository" />
-			-->
-	
-	    <!-- 自动扫描web包 ,将带有注解的类 纳入spring容器管理     
-    <context:component-scan base-package="com.testteam.mqtester"></context:component-scan>  
--->
- 
-  
- <!-- 配置JMS连接工厂 mq1 39-->
-    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://jasonzhang:61616" />
-    </bean>
- <!-- 配置JMS连接工厂 mq1 24-->
-    <bean id="connectionFactory24" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://jasonzhang:61616" />
-    </bean>
-
-    <!-- 定义消息队列（Queue） -->
-    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <!-- 设置消息队列的名字 -->
-        <constructor-arg >
-            <value>testSpringQueue</value>
-        </constructor-arg>
-    </bean>
-
-    <!-- 配置JMS模板（Queue），Spring提供的JMS工具类，它发送、接收消息。 -->
-    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <property name="connectionFactory" ref="connectionFactory" />
-        <property name="defaultDestination" ref="queueDestination" />
-        <property name="receiveTimeout" value="1000" />
-    </bean>
-  
-	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 
-	<bean id="mappingJacksonHttpMessageConverter"
-		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-		<property name="supportedMediaTypes">
-			<list>
-				<value>text/html;charset=UTF-8</value>
-			</list>
-		</property>
-	</bean>
-	-->
- 		<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<property name="messageConverters">
-			<list>
-				<ref bean="mappingJacksonHttpMessageConverter" />
-			</list>
-		</property>
-	</bean>
-	-->
 
     <!-- 引入jdbc配置文件     -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
@@ -118,19 +62,5 @@
         <property name="basePackage" value="dao" />  
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
     </bean>  
-    
-    <!-- 对dataSource 数据源进行事务管理   
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="dataSource" />  
-  -->
-    <!-- 配置使Spring采用CGLIB代理   
-    <aop:aspectj-autoproxy proxy-target-class="true" />  
-  -->
-    <!-- 启用对事务注解的支持   
-    <tx:annotation-driven transaction-manager="transactionManager" />  
-  -->
-    <!-- Cache配置   
-    <cache:annotation-driven cache-manager="cacheManager" />  
-    <bean id="ehCacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:configLocation="classpath:ehcache.xml" />  
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cacheManager-ref="ehCacheManagerFactory" />  
-  -->
+
 </beans>  
