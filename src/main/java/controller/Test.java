@@ -20,12 +20,12 @@ public class Test {
     @Resource  
     private IUserService userService;  
       
-    @RequestMapping("/showUser")  
+    @RequestMapping("/showAllUser")  
     public String toIndex(HttpServletRequest request,Model model){  
-        int userId = Integer.parseInt(request.getParameter("id"));  
-        User user = this.userService.getUserById(userId);  
+        //int userId = Integer.parseInt(request.getParameter("id"));  
+        User user[] = this.userService.getUser();  
         model.addAttribute("user", user);  
         log.info(JSON.toJSONString(user));  
-        return "wel";  
+        return "hello";  
     }  
 }  

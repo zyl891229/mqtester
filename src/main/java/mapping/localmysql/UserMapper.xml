@@ -13,26 +13,26 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from user_t
+    from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="select" resultMap="BaseResultMap" >
     select 
     <include refid="Base_Column_List" />
-    from user_t
+    from t_user
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from user_t
+    delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="pojo.User" >
-    insert into user_t (id, user_name, password, 
+    insert into t_user (id, user_name, password, 
       age)
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{age,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="pojo.User" >
-    insert into user_t
+    insert into t_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -63,7 +63,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="pojo.User" >
-    update user_t
+    update t_user
     <set >
       <if test="userName != null" >
         user_name = #{userName,jdbcType=VARCHAR},
@@ -78,7 +78,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="pojo.User" >
-    update user_t
+    update t_user
     set user_name = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER}

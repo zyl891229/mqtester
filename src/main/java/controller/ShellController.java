@@ -27,7 +27,7 @@ public class ShellController {
 	public void changeCommit(@RequestParam(value = "name") String name, @RequestParam(value = "commit") String commit,
 			@RequestParam(value = "path") String path, @RequestParam(value = "fullpath") String fullpath,
 			HttpServletRequest request, HttpServletResponse response) throws IOException, InterruptedException {
-		String referer = request.getHeader("REFERER");
+		request.getHeader("REFERER");
 		if (path.contains("webapp")) {
 			path = "/Users/yirendai/Work/webdata" + URLDecoder.decode(path, "UTF-8").split("webapp")[1];
 		} else {

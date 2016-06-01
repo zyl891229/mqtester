@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns="http://java.sun.com/xml/ns/j2ee" 
+<?xml version="1.0" encoding="UTF-8"?>  
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
 	xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" 
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_3_0.xsd" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+	id="WebApp_ID"
 	version="3.0">
-    <display-name>yrdsdet</display-name>
+    <display-name>Yrd_sdet</display-name>
+    
+    <!-- Spring配置文件 -->  
 	<context-param>
 		<param-name>contextConfigLocation</param-name>		
 	    <param-value>classpath:spring-mybatis.xml,classpath:spring-mq.xml</param-value>
@@ -50,7 +52,7 @@
   
 	<!-- 启动容器后自动访问的页面 --> 	 
 	<welcome-file-list>
-	  <welcome-file>hello.html</welcome-file>
+	  <welcome-file>hello.*</welcome-file>
 	</welcome-file-list>
   
 	<!-- log4j --> 	
@@ -70,5 +72,4 @@
 	<session-config>
 		<session-timeout>15</session-timeout>
 	</session-config>
-  
 </web-app>
